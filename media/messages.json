@@ -1,0 +1,31 @@
+{
+  "default": [
+    "You showed up today. Builder behavior.",
+    "Consistency beats intensity.",
+    "Another brick laid. Keep building.",
+    "Progress compounds when you show up.",
+    "Small wins. Real momentum.",
+    "The journey of a thousand miles begins with one step",
+    "Great things are done by a series of small things brought together.",
+    "Believe you can and you're halfway there.",
+    "The secret of getting ahead is getting started."
+  ],
+  "projectComplete": [
+    "You shipped. That matters.",
+    "Finished things win. Nice work.",
+    "Another project off the list.",
+    "You didn’t quit halfway. Respect.",
+    "This is builder behavior. Keep going.",
+    "First, solve the problem. Then, write the code",
+    "The function of good software is to make the complex appear simple",
+    "Perfection is achieved, not when there is nothing more to add, but when there is nothing left to take away.",
+    "The only way to learn a new programming language is by writing programs in it.",
+    "Every great developer you know got there by solving problems they were unqualified to solve until they actually did it.",
+    "Programming isn’t about what you know; it’s about what you can figure out.",
+    "Every great developer you know got there by solving problems they were unqualified to solve until they actually did it.",
+    "Any fool can write code that a computer can understand. Good programmers write code that humans can understand.",
+    "Done is better than perfect.",
+    "Perfect is the enemy of done",
+    "Success consists of going from failure to failure without loss of enthusiasm"
+    ]
+}

@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8" />
+<style>
+	html, body {
+		margin: 0;
+		padding: 0;
+		background: black;
+		color: white;
+		width: 100%;
+		height: 100%;
+		font-family: monospace;
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		justify-content: center;
+	}
+
+	.quote {
+		font-size: 14px;
+		opacity: 0.7;
+		margin-bottom: 10px;
+		text-align: center;
+		max-width: 80%;
+	}
+
+	.time {
+		font-size: 64px;
+		font-weight: bold;
+		margin: 20px 0;
+	}
+
+	.controls {
+		display: flex;
+		gap: 12px;
+	}
+
+	button {
+		background: #111;
+		color: white;
+		border: 1px solid #444;
+		padding: 8px 14px;
+		cursor: pointer;
+		font-family: monospace;
+	}
+
+	button:hover {
+		background: #222;
+	}
+</style>
+</head>
+
+<body>
+
+<div class="quote" id="quote">Focus. Build. Repeat.</div>
+<div class="time" id="time">00:00:00</div>
+
+<div class="controls">
+	<button onclick="start()">Start</button>
+	<button onclick="stop()">Stop</button>
+	<button onclick="reset()">Reset</button>
+	<button onclick="pomodoro()">Pomodoro</button>
+</div>
+
+<script>
+	const vscode = acquireVsCodeApi();
+
+	let seconds = 0;
+	let interval = null;
+	let mode = 'stopwatch'; // stopwatch | pomodoro
+	let pomodoroPhase = 'focus'; // focus | break
+
+	const QUOTES = [
+		"Deep work beats busy work.",
+		"Consistency compounds.",
+		"Build something today.",
+		"Focus is a superpower.",
+		"Small wins add up."
+	];
+
+	function format(sec) {
+		const h = Math.floor(sec / 3600);
+		const m = Math.floor((sec % 3600) / 60);
+		const s = sec % 60;
+		return `${String(h).padStart(2,'0')}:${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
+	}
+
+	function tick() {
+		seconds++;
+		document.getElementById('time').innerText = format(seconds);
+
+		if (mode === 'pomodoro') {
+			if (pomodoroPhase === 'focus' && seconds === 50 * 60) {
+				notify('Focus session complete. Take a break.');
+				switchToBreak();
+			}
+			if (pomodoroPhase === 'break' && seconds === 10 * 60) {
+				notify('Break over. Back to work.');
+				switchToFocus();
+			}
+		}
+	}
+
+	function start() {
+		if (!interval) interval = setInterval(tick, 1000);
+	}
+
+	function stop() {
+		clearInterval(interval);
+		interval = null;
+	}
+
+	function reset() {
+		stop();
+		seconds = 0;
+		mode = 'stopwatch';
+		document.getElementById('time').innerText = format(seconds);
+	}
+
+	function pomodoro() {
+		reset();
+		mode = 'pomodoro';
+		pomodoroPhase = 'focus';
+		start();
+	}
+
+	function switchToBreak() {
+		stop();
+		seconds = 0;
+		pomodoroPhase = 'break';
+		updateQuote();
+		start();
+	}
+
+	function switchToFocus() {
+		stop();
+		seconds = 0;
+		pomodoroPhase = 'focus';
+		updateQuote();
+		start();
+	}
+
+	function updateQuote() {
+		const q = QUOTES[Math.floor(Math.random() * QUOTES.length)];
+		document.getElementById('quote').innerText = q;
+	}
+
+	function notify(message) {
+		vscode.postMessage({ type: 'notify', message });
+		updateQuote();
+	}
+</script>
+
+</body>
+</html>

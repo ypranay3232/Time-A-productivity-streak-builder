@@ -1,0 +1,14 @@
+# Node
+node_modules/
+npm-debug.log*
+
+# VS Code extension output
+out/
+.vscode-test/
+
+# OS junk
+.DS_Store
+Thumbs.db
+
+# Env
+.env
