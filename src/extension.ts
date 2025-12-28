@@ -69,6 +69,13 @@ export function activate(context: vscode.ExtensionContext) {
 		'time-a-productivity-streak-builder.openStopwatch',
 		() => openStopwatch(extensionContext)
 	);
+	const resetStats = vscode.commands.registerCommand(
+		'time-a-productivity-streak-builder.resetStats',
+		() => {
+			rewards.reset();
+			vscode.window.showInformationMessage('Stats reset successfully');
+		}
+	);
 
 	// Project completion → star + popup
 	const markComplete = vscode.commands.registerCommand(

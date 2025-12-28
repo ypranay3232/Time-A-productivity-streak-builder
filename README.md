@@ -1,144 +1,113 @@
-# Time Streak Builder ⏱️🔥
+Time Streak Builder ⏱️🔥
+Time Streak Builder is a local-first VS Code extension that tracks your active coding time, builds daily streaks, and rewards you with meaningful feedback — without sending any data anywhere.
 
-**Time Streak Builder** is a local-first VS Code extension that tracks your active coding time, builds daily streaks, and rewards you with meaningful feedback — without sending any data anywhere.
+Privacy Note: No accounts. No SaaS. No tracking servers. Everything stays on your machine.
 
-No accounts. No SaaS. No tracking servers.  
-Everything stays on your machine.
+✨ Features
+⏱️ Smart Time Tracking
+Active Coding Only: Tracks time only when the editor is in focus.
 
----
+Smart Pausing: Automatically pauses when you switch apps.
 
-## ✨ Features
+15-Minute Buffer: Ends a session only after 15 minutes of inactivity to prevent false endings during quick research breaks.
 
-### ⏱️ Smart Time Tracking
-- Tracks **active coding time only**
-- Automatically pauses when you switch apps
-- Ends a session only after **15 minutes of inactivity**
-- Prevents false session endings during quick tab switches
+🔥 Streaks & ⭐ Stars
+Daily Streaks: Tracks consecutive days of coding.
 
-### 🔥 Streaks & ⭐ Stars
-- **Daily streaks** for consistent coding
-- **Stars** for manually completed projects
-- No auto-guessing — user intent is respected
+Manual Stars: Earn stars for manually completed projects—we respect user intent over auto-guessing.
 
-### 🎉 Reward Popup
-- Full-screen reward popup on session end
-- Shows:
-  - Time spent building the project
-  - Current streak
-  - Total stars
-  - Motivational message
-- Clean black UI with animated fire
+🎉 Reward Popup
+Full-screen UI: A clean black interface with animated fire effects.
 
-### ⏲️ Live Stopwatch + Pomodoro
-- Minimal black stopwatch UI
-- Start / Stop / Reset controls
-- Optional **Pomodoro mode (50 min focus / 10 min break)**
-- Notifications at focus & break completion
-- Quotes refresh after each Pomodoro cycle
+Session Stats: View time spent, current streak, total stars, and a motivational message.
 
-### 🔒 Privacy First
-- 100% local storage (JSON)
-- No APIs
-- No network requests
-- You own your data
+⏲️ Live Stopwatch + Pomodoro
+Minimal UI: Sleek black stopwatch with Start / Stop / Reset controls.
 
----
+Pomodoro Mode: 50 min focus / 10 min break cycles.
 
-## 🧠 How It Works (In Simple Terms)
+Notifications: Alerts at focus/break completion and fresh quotes for every cycle.
 
-- Time is counted **only when VS Code is focused**
-- Short tab switches (docs, browser) do **not** end sessions
-- Long inactivity (15+ min) ends the session and shows a reward
-- Project completion is **manual**, never guessed
+🔒 Privacy First
+100% Local: Data is stored in local JSON files.
 
----
+Zero Network: No APIs, no trackers, no network requests.
 
-## 🚀 Commands
+🧠 How It Works
+Focus-Based: Time is counted only when VS Code is the active window.
 
-Open Command Palette (`Ctrl + Shift + P`):
+Grace Period: Short tab switches (checking docs) do not interrupt your session.
 
-- **Time Streak Builder: Open Stopwatch**
-- **Time Streak Builder: Mark Project Complete**
+Session End: Long inactivity triggers the reward screen and saves your progress.
 
----
+Completion: Marking a project "Complete" is a manual action to ensure accuracy.
 
-## 📦 Installation
+🚀 Commands
+Open the Command Palette (Ctrl + Shift + P) and search for:
 
-### From VS Code Marketplace
-1. Open VS Code
-2. Go to **Extensions**
-3. Search for **Time Streak Builder**
-4. Click **Install**
+Time Streak Builder: Open Stopwatch
 
-That’s it. No setup required.
+Time Streak Builder: Mark Project Complete
 
----
+📦 Installation
+✅ From VS Code Marketplace
+Open Visual Studio Code.
 
-### Local Installation (VSIX)
+Go to the Extensions view (Ctrl + Shift + X).
 
-```bash
+Search for Time Streak Builder.
+
+Click Install.
+
+🛠️ Local Installation (.VSIX)
+If you have the build file, run the following command in your terminal:
+
+Bash
+
 code --install-extension time-a-productivity-streak-builder-0.1.0.vsix
-🧑‍💻 Development Setup (For Contributors)
-Prerequisites
+🧑‍💻 Development Setup
+Follow these steps if you want to contribute to the project or run it from the source.
+
+🔧 Prerequisites
 Node.js (v18+ recommended)
 
 npm
 
-VS Code
+Visual Studio Code
 
-Basic knowledge of TypeScript
+📥 Setup & Installation
+1. Clone the Repository
 
-Clone the Repository
-bash
-Copy code
-git clone https://github.com/<your-username>/time-a-productivity-streak-builder.git
+Bash
+
+git clone https://github.com/ypranay3232/Time-A-productivity-streak-builder.git
 cd time-a-productivity-streak-builder
-Install Dependencies
-bash
-Copy code
+2. Install Dependencies
+
+Bash
+
 npm install
-Compile the Extension
-bash
-Copy code
+3. Compile & Run
+
+Bash
+
+# Compile the TypeScript code
 npm run compile
-Run in Development Mode
-Open the project in VS Code
+4. Launching
 
-Press F5
+Open the project folder in VS Code.
 
-A new Extension Development Host window opens
+Press F5 to launch the Extension Development Host.
 
-Test commands via Ctrl + Shift + P
+Test the commands in the new window using Ctrl + Shift + P.
 
 📁 Data Storage
-All data is stored locally using VS Code’s global storage:
+All data is stored locally within VS Code’s global storage. This includes:
 
-Per-project total time
+Per-project total coding time.
 
-Daily streak count
+Daily streak counts.
 
-Star count
+Star counts.
 
-No files are synced or uploaded.
-
-You can reset all data by clearing VS Code global storage.
-
-🏗️ Project Structure
-bash
-Copy code
-src/
-  extension.ts        # Lifecycle & wiring
-  tracker.ts          # Time & inactivity logic
-  storage.ts          # Local persistence
-  rewards.ts          # Streaks & stars
-  firePopup.ts        # Reward WebView
-  stopwatchView.ts    # Stopwatch & Pomodoro UI
-  messages.ts         # Random messages
-  timeUtils.ts        # Duration formatting
-
-media/
-  reward.html
-  stopwatch.html
-  fire.gif
-  messages.json
-  icon.png
+To reset your progress, you can use the internal "Reset Stats" command or clear the VS Code global storage folder.

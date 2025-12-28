@@ -66,11 +66,6 @@
 <script>
 	const vscode = acquireVsCodeApi();
 
-	let seconds = 0;
-	let interval = null;
-	let mode = 'stopwatch'; // stopwatch | pomodoro
-	let pomodoroPhase = 'focus'; // focus | break
-
 	const QUOTES = [
 		"Deep work beats busy work.",
 		"Consistency compounds.",
@@ -86,69 +81,39 @@
 		return `${String(h).padStart(2,'0')}:${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
 	}
 
-	function tick() {
-		seconds++;
-		document.getElementById('time').innerText = format(seconds);
+	// 🔁 Receive ticks from extension host
+	window.addEventListener('message', event => {
+		const { type, seconds, phase } = event.data;
 
-		if (mode === 'pomodoro') {
-			if (pomodoroPhase === 'focus' && seconds === 50 * 60) {
-				notify('Focus session complete. Take a break.');
-				switchToBreak();
-			}
-			if (pomodoroPhase === 'break' && seconds === 10 * 60) {
-				notify('Break over. Back to work.');
-				switchToFocus();
-			}
+		if (type === 'tick') {
+			document.getElementById('time').innerText = format(seconds);
 		}
-	}
 
-	function start() {
-		if (!interval) interval = setInterval(tick, 1000);
-	}
-
-	function stop() {
-		clearInterval(interval);
-		interval = null;
-	}
-
-	function reset() {
-		stop();
-		seconds = 0;
-		mode = 'stopwatch';
-		document.getElementById('time').innerText = format(seconds);
-	}
-
-	function pomodoro() {
-		reset();
-		mode = 'pomodoro';
-		pomodoroPhase = 'focus';
-		start();
-	}
-
-	function switchToBreak() {
-		stop();
-		seconds = 0;
-		pomodoroPhase = 'break';
-		updateQuote();
-		start();
-	}
-
-	function switchToFocus() {
-		stop();
-		seconds = 0;
-		pomodoroPhase = 'focus';
-		updateQuote();
-		start();
-	}
+		if (type === 'phaseChange') {
+			updateQuote();
+		}
+	});
 
 	function updateQuote() {
 		const q = QUOTES[Math.floor(Math.random() * QUOTES.length)];
 		document.getElementById('quote').innerText = q;
 	}
 
-	function notify(message) {
-		vscode.postMessage({ type: 'notify', message });
-		updateQuote();
+	// 🎮 Controls → send intent to extension
+	function start() {
+		vscode.postMessage({ type: 'start' });
+	}
+
+	function stop() {
+		vscode.postMessage({ type: 'stop' });
+	}
+
+	function reset() {
+		vscode.postMessage({ type: 'reset' });
+	}
+
+	function pomodoro() {
+		vscode.postMessage({ type: 'pomodoro' });
 	}
 </script>
 

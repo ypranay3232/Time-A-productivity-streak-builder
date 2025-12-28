@@ -25,6 +25,10 @@
       {
         "command": "time-a-productivity-streak-builder.markProjectComplete",
         "title": "Time Streak Builder: Mark Project Complete"
+      },
+      {
+        "command": "time-a-productivity-streak-builder.resetStats",
+        "title": "Time Streak Builder: Reset Stats"
       }
     ]
   },

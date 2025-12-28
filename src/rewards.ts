@@ -56,6 +56,15 @@ export class Rewards {
 	private save() {
 		this.context.globalState.update('rewards', this.data);
 	}
+	reset() {
+		this.data = {
+			streak: 0,
+			lastActiveDate: null,
+			stars: 0
+		};
+		this.save();
+	}
 
-    
+
+
 }
