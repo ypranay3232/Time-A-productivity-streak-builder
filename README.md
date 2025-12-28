@@ -1,143 +1,144 @@
 # Time Streak Builder ⏱️🔥
 
-
-
 **Time Streak Builder** is a local-first VS Code extension that tracks your active coding time, builds daily streaks, and rewards you with meaningful feedback — without sending any data anywhere.
 
-
-
-![Extension Preview](./assets/hero-screenshot.png)
-
-*Replace the path above with your actual image path*
-
-
-
 No accounts. No SaaS. No tracking servers.  
-
 Everything stays on your machine.
 
-
-
 ---
-
-
 
 ## ✨ Features
 
-
-
 ### ⏱️ Smart Time Tracking
-
 - Tracks **active coding time only**
-
 - Automatically pauses when you switch apps
-
 - Ends a session only after **15 minutes of inactivity**
-
-
+- Prevents false session endings during quick tab switches
 
 ### 🔥 Streaks & ⭐ Stars
-
 - **Daily streaks** for consistent coding
-
 - **Stars** for manually completed projects
+- No auto-guessing — user intent is respected
 
+### 🎉 Reward Popup
+- Full-screen reward popup on session end
+- Shows:
+  - Time spent building the project
+  - Current streak
+  - Total stars
+  - Motivational message
+- Clean black UI with animated fire
 
+### ⏲️ Live Stopwatch + Pomodoro
+- Minimal black stopwatch UI
+- Start / Stop / Reset controls
+- Optional **Pomodoro mode (50 min focus / 10 min break)**
+- Notifications at focus & break completion
+- Quotes refresh after each Pomodoro cycle
+
+### 🔒 Privacy First
+- 100% local storage (JSON)
+- No APIs
+- No network requests
+- You own your data
 
 ---
 
+## 🧠 How It Works (In Simple Terms)
 
+- Time is counted **only when VS Code is focused**
+- Short tab switches (docs, browser) do **not** end sessions
+- Long inactivity (15+ min) ends the session and shows a reward
+- Project completion is **manual**, never guessed
 
-## 🛠️ Installation & Setup (For Developers)
+---
 
+## 🚀 Commands
 
+Open Command Palette (`Ctrl + Shift + P`):
 
-If you want to run this extension locally for development:
+- **Time Streak Builder: Open Stopwatch**
+- **Time Streak Builder: Mark Project Complete**
 
+---
 
+## 📦 Installation
 
-### 1. Clone the Repository
+### From VS Code Marketplace
+1. Open VS Code
+2. Go to **Extensions**
+3. Search for **Time Streak Builder**
+4. Click **Install**
+
+That’s it. No setup required.
+
+---
+
+### Local Installation (VSIX)
 
 ```bash
+code --install-extension time-a-productivity-streak-builder-0.1.0.vsix
+🧑‍💻 Development Setup (For Contributors)
+Prerequisites
+Node.js (v18+ recommended)
 
-git clone [https://github.com/ypranay3232/Time-A-productivity-streak-builder.git](https://github.com/ypranay3232/Time-A-productivity-streak-builder.git)
+npm
 
-cd Time-A-productivity-streak-builder
+VS Code
 
-2. Install Dependencies
+Basic knowledge of TypeScript
 
-This project requires Node.js and npm. Run the following command to install the necessary packages (like @types/vscode and others listed in package.json):
-
-
-
-Bash
-
-
-
+Clone the Repository
+bash
+Copy code
+git clone https://github.com/<your-username>/time-a-productivity-streak-builder.git
+cd time-a-productivity-streak-builder
+Install Dependencies
+bash
+Copy code
 npm install
+Compile the Extension
+bash
+Copy code
+npm run compile
+Run in Development Mode
+Open the project in VS Code
 
-3. Run the Extension
+Press F5
 
-Open the project in VS Code.
+A new Extension Development Host window opens
 
-
-
-Press F5 to open a new Extension Development Host window.
-
-
-
-The extension is now active in that new window!
-
-
-
-🚀 Commands
-
-Open Command Palette (Ctrl + Shift + P):
-
-
-
-Time Streak Builder: Open Stopwatch
-
-
-
-Time Streak Builder: Mark Project Complete
-
-
+Test commands via Ctrl + Shift + P
 
 📁 Data Storage
+All data is stored locally using VS Code’s global storage:
 
-All data is stored locally in your VS Code Global Storage. You can find it here:
+Per-project total time
 
+Daily streak count
 
+Star count
 
-Windows: %APPDATA%\Code\User\globalStorage\ypranay3232.time-a-productivity-streak-builder
+No files are synced or uploaded.
 
+You can reset all data by clearing VS Code global storage.
 
+🏗️ Project Structure
+bash
+Copy code
+src/
+  extension.ts        # Lifecycle & wiring
+  tracker.ts          # Time & inactivity logic
+  storage.ts          # Local persistence
+  rewards.ts          # Streaks & stars
+  firePopup.ts        # Reward WebView
+  stopwatchView.ts    # Stopwatch & Pomodoro UI
+  messages.ts         # Random messages
+  timeUtils.ts        # Duration formatting
 
-macOS: ~/Library/Application Support/Code/User/globalStorage/ypranay3232.time-a-productivity-streak-builder
-
-
-
-📌 Status
-
-Version: 0.1.0
-
-
-
-Stable V1
-
-
-
-License: MIT (See LICENSE file)
-
-
-
-🙌 Credits
-
-Built with focus on developer experience, privacy, and real-world workflows.
-
-
-
-![Streak image](/media/Streak.png)
-
-![Counter/Timer/stopwatch image](/media/Timer.png)
+media/
+  reward.html
+  stopwatch.html
+  fire.gif
+  messages.json
+  icon.png
