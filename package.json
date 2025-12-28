@@ -1,9 +1,10 @@
 {
   "name": "time-a-productivity-streak-builder",
-  "displayName": "Time Streak Builder",
+  "displayName": "Time: A Streak & productivity Habit Builder",
   "description": "Local-first coding time tracker with streaks and rewards",
   "publisher": "BuddyTools",
-  "version": "0.0.1",
+  "icon": "media/icon.png",
+  "version": "0.0.2",
   "engines": {
     "vscode": "^1.107.0"
   },

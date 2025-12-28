@@ -1,113 +1,151 @@
-# Time Streak Builder ⏱️🔥
+<a name="readme-top"></a>
 
-**Time Streak Builder** is a local-first VS Code extension that tracks your active coding time, builds daily streaks, and rewards you with meaningful feedback — without sending any data anywhere.
+[![Contributors][contributors-shield]][contributors-url]
+[![Forks][forks-shield]][forks-url]
+[![Stargazers][stars-shield]][stars-url]
+[![Issues][issues-shield]][issues-url]
+[![MIT License][license-shield]][license-url]
 
-No accounts. No SaaS. No tracking servers.  
-Everything stays on your machine.
+<br />
+<div align="center">
+  <a href="https://github.com/ypranay3232/Time-A-productivity-streak-builder">
+    <img src="media/Timer.png" alt="Logo" width="80" height="80">
+  </a>
 
----
+<h3 align="center">Time Streak Builder ⏱️🔥</h3>
 
-## ✨ Features
+  <p align="center">
+    A local-first VS Code extension to track your coding streaks without the cloud.
+    <br />
+    <a href="https://github.com/ypranay3232/Time-A-productivity-streak-builder"><strong>Explore the docs »</strong></a>
+    <br />
+    <br />
+    <a href="https://github.com/ypranay3232/Time-A-productivity-streak-builder/issues">Report Bug</a>
+    ·
+    <a href="https://github.com/ypranay3232/Time-A-productivity-streak-builder/issues">Request Feature</a>
+  </p>
+</div>
 
-### ⏱️ Smart Time Tracking
-- Tracks **active coding time only**
-- Automatically pauses when you switch apps
-- Ends a session only after **15 minutes of inactivity**
-- Prevents false session endings during quick tab switches
+<details>
+  <summary>Table of Contents</summary>
+  <ol>
+    <li>
+      <a href="#about-the-project">About The Project</a>
+      <ul>
+        <li><a href="#built-with">Built With</a></li>
+      </ul>
+    </li>
+    <li>
+      <a href="#getting-started">Getting Started</a>
+      <ul>
+        <li><a href="#prerequisites">Prerequisites</a></li>
+        <li><a href="#installation">Installation</a></li>
+      </ul>
+    </li>
+    <li><a href="#usage">Usage</a></li>
+    <li><a href="#roadmap">Roadmap</a></li>
+    <li><a href="#contributing">Contributing</a></li>
+    <li><a href="#license">License</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ol>
+</details>
 
-### 🔥 Streaks & ⭐ Stars
-- **Daily streaks** for consistent coding
-- **Stars** for manually completed projects
-- No auto-guessing — user intent is respected
+## About The Project
 
-### 🎉 Reward Popup
-- Full-screen reward popup on session end
-- Shows:
-  - Time spent building the project
-  - Current streak
-  - Total stars
-  - Motivational message
-- Clean black UI with animated fire
+[![Product Name Screen Shot][product-screenshot]](https://github.com/ypranay3232/Time-A-productivity-streak-builder)
 
-### ⏲️ Live Stopwatch + Pomodoro
-- Minimal black stopwatch UI
-- Start / Stop / Reset controls
-- Optional **Pomodoro mode (50 min focus / 10 min break)**
-- Notifications at focus & break completion
-- Quotes refresh after each Pomodoro cycle
+Time Streak Builder was born out of a simple need: tracking coding productivity without sacrificing privacy. Most tools today are SaaS-based and track your data on their servers. This extension implements DRY (Don't Repeat Yourself) principles for your focus—it just works, locally.
 
-### 🔒 Privacy First
-- 100% local storage (JSON)
-- No APIs
-- No network requests
-- You own your data
+**Why use Time Streak Builder?**
+* **Privacy First:** 100% local storage. No APIs. No tracking.
+* **Smart Tracking:** Only counts time when you are actually in VS Code.
+* **Minimalist:** No cluttered UI—just a clean black stopwatch and rewarding fire animations.
 
----
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
 
-## 🧠 How It Works (In Simple Terms)
+### Built With
 
-- Time is counted **only when VS Code is focused**
-- Short tab switches (docs, browser) do **not** end sessions
-- Long inactivity (15+ min) ends the session and shows a reward
-- Project completion is **manual**, never guessed
+* [![TypeScript][TypeScript.org]][TypeScript-url]
+* [![VS Code][VSCode.com]][VSCode-url]
+* [![Node][Node.js]][Node-url]
 
----
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
 
-## 🚀 Commands
+## Getting Started
 
-Open Command Palette (`Ctrl + Shift + P`):
+To get a local copy up and running for development, follow these steps.
 
-- **Time Streak Builder: Open Stopwatch**
-- **Time Streak Builder: Mark Project Complete**
+### Prerequisites
 
----
+* npm
+  ```sh
+  npm install npm@latest -g
+Installation
+Clone the repo
 
-## 📁 Data Storage
+Bash
 
-All data is stored locally in:
+git clone [https://github.com/ypranay3232/Time-A-productivity-streak-builder.git](https://github.com/ypranay3232/Time-A-productivity-streak-builder.git)
+Install NPM packages
 
+Bash
 
+npm install
+Open in VS Code and press F5 to run the extension.
 
-VsCode GlobalStorage : 
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
 
-Includes:
-- Per-project total time
-- Daily streak data
-- Stars count
+Usage
+Smart Timer & Streaks
+The extension monitors your activity. After 15 minutes of inactivity, it automatically concludes your session and updates your streak.
 
-You can delete this data anytime.
+<div align="center"> <img src="/media/Streak.png" alt="Streak Screenshot" width="600"> </div>
 
----
+Commands
+Use Ctrl + Shift + P to access:
 
-## 🏆 Why This Exists
+Time Streak Builder: Open Stopwatch
 
-Most productivity tools:
-- Track everything
-- Send data to servers
-- Guess what “work” means
+Time Streak Builder: Mark Project Complete
 
-**Time Streak Builder** focuses on:
-- Honest measurement
-- Habit reinforcement
-- Developer trust
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
 
----
+Roadmap
+[ ] Add Custom Theme Support
 
-## 🛠️ Installation
+[ ] Multi-language Support
 
-From VS Code Marketplace (coming soon)  
-or install locally using a VSIX build.
+[ ] Export Data to CSV
 
----
+[ ] Add Weekly Stats Dashboard
 
-## 📌 Status
+See the open issues for a full list of proposed features.
 
-- Version: `0.1.0`
-- Stable V1
-- Actively improving
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
 
----
+Contributing
+Contributions are what make the open source community such an amazing place to learn, inspire, and create.
 
-## 🙌 Credits
+Fork the Project
 
-Built with focus on **developer experience**, **privacy**, and **real-world workflows**.
+Create your Feature Branch (git checkout -b feature/AmazingFeature)
+
+Commit your Changes (git commit -m 'Add some AmazingFeature')
+
+Push to the Branch (git push origin feature/AmazingFeature)
+
+Open a Pull Request
+
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
+
+License
+Distributed under the MIT License. See LICENSE for more information.
+
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
+
+Contact
+Pranay - [@your_handle] - email@example.com
+
+Project Link: https://github.com/ypranay3232/Time-A-productivity-streak-builder
+
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
