@@ -1,121 +1,404 @@
 <!DOCTYPE html>
 <html>
+
 <head>
-<meta charset="UTF-8" />
-<style>
-	html, body {
-		margin: 0;
-		padding: 0;
-		background: black;
-		color: white;
-		width: 100%;
-		height: 100%;
-		font-family: monospace;
-		display: flex;
-		flex-direction: column;
-		align-items: center;
-		justify-content: center;
-	}
+	<meta charset="UTF-8" />
+	<style>
+		html,
+		body {
+			margin: 0;
+			padding: 0;
+			background: black;
+			color: white;
+			width: 100%;
+			height: 100%;
+			font-family: monospace;
+			display: flex;
+			flex-direction: column;
+			align-items: center;
+			justify-content: center;
+		}
 
-	.quote {
-		font-size: 14px;
-		opacity: 0.7;
-		margin-bottom: 10px;
-		text-align: center;
-		max-width: 80%;
-	}
+		.quote {
+			font-size: 14px;
+			opacity: 0.7;
+			margin-bottom: 10px;
+			text-align: center;
+			max-width: 80%;
+		}
 
-	.time {
-		font-size: 64px;
-		font-weight: bold;
-		margin: 20px 0;
-	}
+		.time {
+			font-size: 64px;
+			font-weight: bold;
+			margin: 20px 0;
+		}
 
-	.controls {
-		display: flex;
-		gap: 12px;
-	}
+		.controls {
+			display: flex;
+			gap: 12px;
+		}
 
-	button {
-		background: #111;
-		color: white;
-		border: 1px solid #444;
-		padding: 8px 14px;
-		cursor: pointer;
-		font-family: monospace;
-	}
+		button {
+			background: #111;
+			color: white;
+			border: 1px solid #444;
+			padding: 8px 14px;
+			cursor: pointer;
+			font-family: monospace;
+			transition: all 0.15s ease;
+		}
 
-	button:hover {
-		background: #222;
-	}
-</style>
+		button:hover {
+			background: #222;
+		}
+
+		button.active {
+			transform: scale(0.95);
+			background: white;
+			color: black;
+		}
+
+		button:disabled {
+			opacity: 0.4;
+			cursor: not-allowed;
+		}
+
+		.time {
+			transition: opacity 0.2s ease;
+		}
+	</style>
 </head>
 
 <body>
 
-<div class="quote" id="quote">Focus. Build. Repeat.</div>
-<div class="time" id="time">00:00:00</div>
+	<div class="quote" id="quote">Focus. Build. Repeat.</div>
+	<div class="time" id="time">--:--:--</div>
+	<div id="session" style="
+	font-size: 12px;
+	opacity: 0.6;
+	margin-top: 8px;
+">
+		Session 0
+	</div>
 
-<div class="controls">
-	<button onclick="start()">Start</button>
-	<button onclick="stop()">Stop</button>
-	<button onclick="reset()">Reset</button>
-	<button onclick="pomodoro()">Pomodoro</button>
-</div>
 
-<script>
-	const vscode = acquireVsCodeApi();
 
-	const QUOTES = [
-		"Deep work beats busy work.",
-		"Consistency compounds.",
-		"Build something today.",
-		"Focus is a superpower.",
-		"Small wins add up."
-	];
+	<div class="controls">
+		<button onclick="start()">Start</button>
+		<button onclick="stop()">Stop</button>
+		<button onclick="reset()">Reset</button>
+	</div>
 
-	function format(sec) {
-		const h = Math.floor(sec / 3600);
-		const m = Math.floor((sec % 3600) / 60);
-		const s = sec % 60;
-		return `${String(h).padStart(2,'0')}:${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
-	}
+	<script>
+		const vscode = acquireVsCodeApi();
 
-	// 🔁 Receive ticks from extension host
-	window.addEventListener('message', event => {
-		const { type, seconds, phase } = event.data;
-
-		if (type === 'tick') {
-			document.getElementById('time').innerText = format(seconds);
+		const QUOTES = [
+			"Deep work beats busy work.",
+			"Consistency compounds.",
+			"Build something today.",
+			"Focus is a superpower.",
+			"Small wins add up.",
+			"Don't stop when you're tired. Stop when you're done.",
+			"Every second counts. Make them count for you.",
+			"The clock is ticking. Are you?",
+			"Don't watch the clock; do what it does. Keep going.",
+			"Your future is created by what you do today, not tomorrow.",
+			"Speed is irrelevant if you're going in the wrong direction.",
+			"Start now. Get perfect later.",
+			"Time is a created thing. To say 'I don't have time' is to say 'I don't want to.'",
+			"The two most powerful warriors are patience and time.",
+			"Time is the longest distance between two places.",
+			"Lost time is never found again.",
+			"Time is what we want most, but what we use worst.",
+			"Your time is limited, so don't waste it living someone else's life.",
+			"Own the moment.",
+			"Now or never.",
+			"Minutes matter.",
+			"Be present.",
+			"Beat the clock.",
+			"Focus. Execute. Repeat.",
+			"Chase the seconds.",
+			"The difference between ordinary and extraordinary is that little extra.",
+			"Success is the sum of small efforts, repeated day in and day out.",
+			"Yesterday you said tomorrow. Just do it.",
+			"Win the morning, win the day.",
+			"A champion is defined by what they do when the clock is running.",
+			"One tab to rule them all.",
+			"Silence the noise, amplify the signal.",
+			"Distraction is the only deadline that never moves.",
+			"Single-task like your life depends on it—because your dreams do.",
+			"Attention is currency, spend it like a minimalist.",
+			"Inbox zero is useless if brain is maxed.",
+			"Turn off the world, turn on the flow.",
+			"Notifications are other people's priorities wearing a mask.",
+			"Focus is free, but expensive to earn back.",
+			"The mute button is a superpower—use it.",
+			"Start tiny, win tiny, stack tiny.",
+			"A 5-minute start beats a 5-hour plan.",
+			"Progress loves the boring days.",
+			"Motion creates emotion.",
+			"Do the first 2%, momentum handles 98%.",
+			"Tick one box, feel the domino.",
+			"Done is the new perfect.",
+			"Ship before you're scared.",
+			"Celebrate the reps, not just the records.",
+			"Every finished pomodoro is a high-five from future-you.",
+			"The clock is hiring—show up for the shift.",
+			"Hours don't lie, spreadsheets do.",
+			"1440 fresh minutes daily—no rollover data.",
+			"Spend your seconds like they're Bitcoin at $1.",
+			"Later is a liar.",
+			"Tomorrow's fuel is today's focus.",
+			"Time expands when you stop killing it.",
+			"Beat the sun, own the day.",
+			"Midnight is a deadline, not a suggestion.",
+			"Work like a sprinter, rest like a monk.",
+			"Hydrate, elevate.",
+			"Your chair is not a throne—stand up, king.",
+			"Screens off, eyes up, ideas in.",
+			"Deep breaths reset the RAM.",
+			"Stretch > stress.",
+			"Fatigue makes cowards of us all—nap accordingly.",
+			"Protect your energy like it's the last slice.",
+			"Good lighting is a free productivity app.",
+			"Earbuds in, world out, zone on.",
+			"Push commits, not anxiety.",
+			"Green squares > green moods.",
+			"Refactor your mind before the codebase.",
+			"Compile your habits daily.",
+			"Bugs hate clarity—document everything.",
+			"Git reset your doubts.",
+			"Build in public, learn in silence.",
+			"Syntax errors can't survive a calm mind.",
+			"Ship early, patch happy.",
+			"Console.log your gratitude.",
+			"Discipline is motivation's reliable friend.",
+			"Mood follows action, not the other way around.",
+			"You don't need feelings, you need follow-through.",
+			"Auto-pilot is earned after 21 reps.",
+			"Motivation starts the car, discipline keeps it rolling.",
+			"Willpower is a battery—charge it with sleep.",
+			"Routine is the cheat code for free will.",
+			"Systems beat goals, habits beat hacks.",
+			"Consistency is the quiet cousin of talent.",
+			"Master the boring, own the extraordinary.",
+			"Perfect is the enemy of shipped.",
+			"Draft ugly, polish later.",
+			"Version 0.1 > Vision 1.0 that never leaves your head.",
+			"Flawed and finished beats flawless and forgotten.",
+			"Iterate like nobody's watching—because they aren't.",
+			"Mistakes are just unpaid tutors.",
+			"Polish the edge, not the whole sword.",
+			"Fail fast, learn faster, laugh fastest.",
+			"Great is a moving target—ship at 'good'.",
+			"Your future self is not a perfectionist, just publish.",
+			"Replace 'I have to' with 'I choose to'.",
+			"Turn 'should' into 'scheduled'.",
+			"Problems are unpaid puzzles.",
+			"Curiosity > criticism.",
+			"Trade expectations for experiments.",
+			"Comparison is a rigged game—play solo mode.",
+			"Stress is a signpost, not a stop sign.",
+			"Upgrade your self-talk, update your output.",
+			"See obstacles as QA for your character.",
+			"Gratitude is the cheapest performance enhancer.",
+			"Work like someone's trying to outrun you—because someone is.",
+			"Dream big, execute small, repeat forever.",
+			"Ambition without action is just daydream tuition.",
+			"Sweat in silence, let success make noise.",
+			"Turn pressure into power.",
+			"Be the hardest worker in the Zoom call.",
+			"Effort is talent's bodyguard.",
+			"Rise early, shine daily.",
+			"Grind now, glow later.",
+			"Hustle beats luck when luck sleeps in.",
+			"Code like the compiler is your hype man.",
+			"If it's not fun, you're doing it wrong—or too slowly.",
+			"Turn caffeine into code, not anxiety.",
+			"Dance breaks are debugging for the soul.",
+			"Memes are micro-vacations—take one, then get back.",
+			"Productivity playlist > perfect workspace.",
+			"A silly wallpaper can reset a serious brain.",
+			"Laugh at bugs, they hate that.",
+			"Work hard, snack harder.",
+			"Keep calm and git push.",
+			"Ship it, then sip tea.",
+			"Flow state > clout chase.",
+			"Turn off dark mode, turn on bright mindset.",
+			"Less scroll, more control.",
+			"Your future bio is written in today's todos.",
+			"Sprint, rest, sprint, rest—lions don't jog.",
+			"Keyboard clicks are productivity ASMR.",
+			"Todo lists are love letters to tomorrow.",
+			"Delete, delegate, dominate.",
+			"Breathe in possibility, exhale excuses.",
+			"Minute now > miracle later.",
+			"Progress hides in the unsexy hours.",
+			"Focus is floss for the brain—daily or decay.",
+			"Rise, repo, repeat.",
+			"Calendars are time Tetris—stack smart.",
+			"Do the worst first, coast the rest.",
+			"Outrun yesterday, not influencers.",
+			"Ideas mature when watered with attention.",
+			"Turn caffeine into characters, not chaos.",
+			"Sleep is the original nootropic.",
+			"Clarity is click-bait for the mind.",
+			"Multitaskers are serial killers of progress.",
+			"Finish lines love starters.",
+			"Mood follows motion—stand up now.",
+			"Notifications are vampires, garlic is airplane mode.",
+			"Track time like you track steps.",
+			"Deadlines are finish lines, not suggestions.",
+			"Small daily edges compound into cliffs of success.",
+			"Work expands to fill the anxiety you allow.",
+			"Keep your desk cleaner than your browser history.",
+			"Launch before the fear loads.",
+			"Done list > To-do list.",
+			"Beat resistance with a 5-minute punch.",
+			"Flow loves routine, fears surprise.",
+			"Turn 'ugh' into 'upload'.",
+			"Your brain is for ideas, not storage—write it down.",
+			"Perfection is procrastination in a tuxedo.",
+			"Action kills anxiety.",
+			"Reps > inspiration.",
+			"Systems sleep, habits hustle.",
+			"Think in sprints, live in marathons.",
+			"Creativity clocks in right after discipline.",
+			"Make your 'later' queue terrifyingly small.",
+			"Success is silent, excuses are loud.",
+			"Turn red squiggles into green lights.",
+			"Meetings are productivity black holes—escape velocity is 'no'.",
+			"Code today, comfort tomorrow.",
+			"Willpower is a startup, discipline is scale.",
+			"Momentum is morale in motion.",
+			"Git commit your life choices.",
+			"Productivity is just adult hide-and-seek with distractions.",
+			"Earn your shower thoughts.",
+			"Turn blur into blur speed.",
+			"Chase flow, not followers.",
+			"The best productivity app is a closed tab.",
+			"Deep work is a cheat day for the ego.",
+			"Schedule like a pessimist, execute like an optimist.",
+			"Burnout is just boredom wearing a mask.",
+			"Replace 'busy' with 'better'.",
+			"Finish something before coffee finishes you.",
+			"Time-blocking is Tetris for adults.",
+			"Stress is unprocessed input—defrag nightly.",
+			"Keep promises to your calendar like you do to your boss.",
+			"Creativity hates clutter—digital and mental.",
+			"Progress is the best mood booster.",
+			"Todo zero feels like inbox zero for the soul.",
+			"Turn can't into cache-clear.",
+			"Sprint like a cheetah, rest like a sloth.",
+			"Your future self is watching through git history.",
+			"Beat the clock, don't babysit it.",
+			"Work like you're on airplane wifi—focused and fast.",
+			"Small bugs today become weekend monsters.",
+			"Energy management > time management.",
+			"Trade drama for documentation.",
+			"Say 'no' by default, 'yes' by strategy.",
+			"Productivity peaks at the intersection of panic and plan.",
+			"Turn Monday into momentum.",
+			"Ruthless focus is polite to your future.",
+			"Done is the best debug.",
+			"Keep your IDE and mind open, tabs closed.",
+			"Focus is a muscle—rep it daily.",
+			"Calendar invites are boomerangs—throw wisely.",
+			"Turn stretch goals into stretch breaks.",
+			"Ship at 80%, patch at 100%.",
+			"Your next idea is one pomodoro away.",
+			"Trade complaints for commits.",
+			"Work hard, nap harder.",
+			"Turn caffeine into code, not crashes.",
+			"Success is a collection of completed Tuesdays.",
+			"Beat the sun, own the code.",
+			"Todo lists are suggestions, done lists are receipts.",
+			"Flow state is silent, distractions knock—don't answer.",
+			"Turn panic into push.",
+			"Complexity is the enemy of execution—simplify ruthlessly.",
+			"Discipline is a quiet brag.",
+			"Progress loves speed, perfection hates it.",
+			"Turn 'someday' into 'scheduled'.",
+			"Keyboard shortcuts are life shortcuts.",
+			"Deep work today, dividends tomorrow.",
+			"The best time to plant a tree was pomodoro #1.",
+			"Clarity is the original life hack.",
+			"Multitasking is junk food for the brain.",
+			"Done beats perfect, every single sprint.",
+			"Turn red lines into green lights.",
+			"Your focus determines your reality—Jedi-level it.",
+			"Meetings are productivity black holes—escape velocity is 'no'.",
+			"Hustle smart, rest smart, repeat.",
+			"Track your time like a jealous accountant.",
+			"Future you is a stakeholder—don't screw them.",
+			"Turn blur into build.",
+			"Productivity is just organized stubbornness.",
+			"Start before the coffee cools.",
+			"Willpower is rechargeable—plug into sleep.",
+			"Ship, sleep, sharpen, ship.",
+			"Turn 'later' into 'loaded'.",
+			"Flow is the new hustle.",
+			"Time is non-refundable, spend it like a minimalist.",
+			"Your calm is a competitive edge.",
+			"Finish the task, free the mind.",
+			"Clock out on the grind, clock in on the dream."
+		];
+		function setRandomQuote() {
+			const q = QUOTES[Math.floor(Math.random() * QUOTES.length)];
+			document.getElementById('quote').innerText = q;
 		}
 
-		if (type === 'phaseChange') {
-			updateQuote();
+		function format(sec) {
+			const h = Math.floor(sec / 3600);
+			const m = Math.floor((sec % 3600) / 60);
+			const s = sec % 60;
+			return `${String(h).padStart(2, '0')}:${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')}`;
 		}
-	});
 
-	function updateQuote() {
-		const q = QUOTES[Math.floor(Math.random() * QUOTES.length)];
-		document.getElementById('quote').innerText = q;
-	}
+		window.addEventListener('message', event => {
+			if (event.data.type === 'tick') {
+				document.getElementById('time').innerText =
+					format(event.data.seconds);
+			}
 
-	// 🎮 Controls → send intent to extension
-	function start() {
-		vscode.postMessage({ type: 'start' });
-	}
+			if (event.data.type === 'session') {
+				document.getElementById('session').innerText =
+					`Session ${event.data.count}`;
+			}
+		});
 
-	function stop() {
-		vscode.postMessage({ type: 'stop' });
-	}
 
-	function reset() {
-		vscode.postMessage({ type: 'reset' });
-	}
+		function updateQuote() {
+			const q = QUOTES[Math.floor(Math.random() * QUOTES.length)];
+			document.getElementById('quote').innerText = q;
+		}
 
-	function pomodoro() {
-		vscode.postMessage({ type: 'pomodoro' });
-	}
-</script>
+		// 🎮 Controls → send intent to extension
+		function start() {
+			setRandomQuote();
+			vscode.postMessage({ type: 'start' });
+		}
+
+		function stop() {
+			setRandomQuote();
+			vscode.postMessage({ type: 'stop' });
+		}
+
+		function reset() {
+			setRandomQuote();
+			vscode.postMessage({ type: 'reset' });
+		}
+
+		function setActive(btn) {
+			document.querySelectorAll('button').forEach(b => b.classList.remove('active'));
+			if (btn === 'pomodoro') {
+				document.querySelector('button[onclick="pomodoro()"]').classList.add('active');
+			}
+		}
+
+
+	</script>
 
 </body>
+
 </html>

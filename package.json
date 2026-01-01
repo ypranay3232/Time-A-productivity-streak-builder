@@ -1,16 +1,14 @@
 {
   "name": "time-a-productivity-streak-builder",
-  "displayName": "Time: A Streak & productivity Habit Builder",
-  "description": "Local-first coding time tracker with streaks and rewards",
+  "displayName": "Time: A Streak & Productivity Habit Builder",
+  "description": "Local-first coding time tracker with streaks, stopwatch, and Pomodoro sessions.",
   "publisher": "BuddyTools",
   "icon": "media/icon.png",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "engines": {
     "vscode": "^1.107.0"
   },
-  "categories": [
-    "Other"
-  ],
+  "categories": ["Other"],
   "activationEvents": [
     "*",
     "onStartupFinished"
@@ -23,6 +21,10 @@
         "title": "Time Streak Builder: Open Stopwatch"
       },
       {
+        "command": "time-a-productivity-streak-builder.openPomodoro",
+        "title": "Time Streak Builder: Open Pomodoro"
+      },
+      {
         "command": "time-a-productivity-streak-builder.markProjectComplete",
         "title": "Time Streak Builder: Mark Project Complete"
       },
@@ -30,7 +32,24 @@
         "command": "time-a-productivity-streak-builder.resetStats",
         "title": "Time Streak Builder: Reset Stats"
       }
-    ]
+    ],
+    "configuration": {
+      "title": "Time Streak Builder",
+      "properties": {
+        "timeStreakBuilder.pomodoro.focusMinutes": {
+          "type": "number",
+          "default": 50,
+          "minimum": 1,
+          "description": "Pomodoro focus duration (minutes)"
+        },
+        "timeStreakBuilder.pomodoro.breakMinutes": {
+          "type": "number",
+          "default": 10,
+          "minimum": 1,
+          "description": "Pomodoro break duration (minutes)"
+        }
+      }
+    }
   },
   "scripts": {
     "compile": "tsc -p ./",

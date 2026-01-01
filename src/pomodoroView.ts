@@ -17,7 +17,7 @@ export function openPomodoro(context: vscode.ExtensionContext) {
 
 	const panel = vscode.window.createWebviewPanel(
 		'pomodoro',
-		'🍅 Pomodoro',
+		'Pomodoro',
 		vscode.ViewColumn.Beside,
 		{
 			enableScripts: true,

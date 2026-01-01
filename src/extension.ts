@@ -6,6 +6,8 @@ import { showFirePopup } from './firePopup';
 import { getRandomMessage } from './messages';
 import { openStopwatch } from './stopwatchView';
 import { formatDuration } from './timeUtils';
+import { openPomodoro } from './pomodoroView';
+
 
 let tracker: TimeTracker;
 let storage: Storage;
@@ -76,6 +78,27 @@ export function activate(context: vscode.ExtensionContext) {
 			vscode.window.showInformationMessage('Stats reset successfully');
 		}
 	);
+	const openPomodoroCmd = vscode.commands.registerCommand(
+		'time-a-productivity-streak-builder.openPomodoro',
+		() => openPomodoro(context)
+	);
+
+
+	context.subscriptions.push(openPomodoroCmd);
+
+	const internalAddTime = vscode.commands.registerCommand(
+		'time-a-productivity-streak-builder.internalAddTime',
+		(ms: number) => {
+			const projectName =
+				vscode.workspace.workspaceFolders?.[0]?.name ?? 'unknown-project';
+
+			storage.addTime(projectName, ms);
+		}
+	);
+
+	context.subscriptions.push(internalAddTime);
+
+
 
 	// Project completion → star + popup
 	const markComplete = vscode.commands.registerCommand(
@@ -103,6 +126,7 @@ export function activate(context: vscode.ExtensionContext) {
 	);
 
 	context.subscriptions.push(openStopwatchCmd, markComplete);
+
 }
 
 export function deactivate() {
