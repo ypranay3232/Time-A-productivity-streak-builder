@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="UTF-8" />
+	<style>
+		html,
+		body {
+			margin: 0;
+			padding: 0;
+			background: black;
+			color: white;
+			width: 100%;
+			height: 100%;
+			font-family: monospace;
+			display: flex;
+			flex-direction: column;
+			align-items: center;
+			justify-content: center;
+		}
+
+		.time {
+			font-size: 72px;
+			font-weight: bold;
+			margin-bottom: 20px;
+		}
+
+		.controls {
+			display: flex;
+			gap: 12px;
+		}
+
+		button {
+			background: #111;
+			color: white;
+			border: 1px solid #444;
+			padding: 8px 16px;
+			cursor: pointer;
+			transition: all 0.15s ease;
+		}
+
+		button:active {
+			transform: scale(0.95);
+			background: white;
+			color: black;
+		}
+
+		.time {
+			transition: opacity 0.2s ease;
+		}
+	</style>
+</head>
+
+<body>
+	<div id="quote" style="
+	font-size: 14px;
+	opacity: 0.7;
+	margin-bottom: 12px;
+	text-align: center;
+">
+		Focus. Build. Repeat.
+	</div>
+
+	<div class="time" id="time">50:00</div>
+	<div id="session" style="
+	font-size: 12px;
+	opacity: 0.6;
+	margin-top: 8px;
+">
+		Session 0
+	</div>
+
+
+	<div class="controls">
+		<button onclick="start()">Start</button>
+		<button onclick="reset()">Reset</button>
+		<button onclick="exitPomodoro()">Exit</button>
+	</div>
+
+	<script>
+		const QUOTES = [
+			"Focus on being productive, not busy.",
+			"Work hard in silence, let your success be your noise.",
+			"The secret of getting ahead is getting started.",
+			"One 25-minute block at a time.",
+			"Deep work is the superpower of the 21st century.",
+			"Don't mistake motion for progress.",
+			"A break is not a waste of time; it's a fuel for the mind.",
+			"Small steps lead to big results.",
+			"Energy is finite. Use your intervals wisely.",
+			"Focus is a muscle. The more you use it, the stronger it gets.",
+			"Rest when you're tired, but never quit.",
+			"Your mind is for having ideas, not holding them.",
+			"Do the hard work now; enjoy the results later.",
+			"Discipline is choosing between what you want now and what you want most.",
+			"Success is built one interval at a time.",
+			"Keep your head down and your timer running.",
+			"Flow follows focus.",
+			"It’s not about having time, it’s about making time.",
+			"Quality over quantity. Always.",
+			"Stay focused. Stay humble. Always hustle.",
+			"The 5-minute break is just as important as the 25-minute work.",
+			"Finish each day and be done with it.",
+			"Your potential is endless, but your time is not.",
+			"Master your minutes to master your life.",
+			"Slow progress is still progress.",
+			"25 minutes of focus, 5 minutes of freedom—repeat until legendary.",
+			"One pomodoro at a time, you outrun the marathoners.",
+			"Set the timer, lock the world out, let the flow in.",
+			"That ticking is the sound of your dreams getting closer.",
+			"25 minutes of pure presence > 8 hours of half-focus.",
+			"Breaks are not indulgent; they're part of the algorithm.",
+			"Four pomodoros a day keeps the burnout away.",
+			"Start the timer—procrastination just lost its Wi-Fi.",
+			"Focus is a muscle: 25 reps, 5-second rest.",
+			"The tomato is red so you can go green-lit all day.",
+			"Your future self is watching this pomodoro like it's Netflix.",
+			"Distractions hate countdown clocks—keep yours glaring.",
+			"Ship one pomodoro, earn one dopamine.",
+			"Don't pause the timer; pause the noise.",
+			"Tiny sprints, giant leaps.",
+			"Flow state loads at 24:59.",
+			"Make your break a micro-vacation, not a micro-scroll.",
+			"Pomodoro: the cheat code for 'I don't have time'.",
+			"Beat the clock before the clock beats your goals.",
+			"25 minutes of single-tasking beats 25 tabs of multi-slacking.",
+			"Turn caffeine into commits during one tomato.",
+			"Rest is not the enemy of hustle; it's the maintenance crew.",
+			"Close the loops in your mind, open the timer in your hand.",
+			"A pomodoro a day builds portfolios (and abs for your brain).",
+			"Discipline = starting the timer even when motivation ghosts you.",
+			"Let the break recharge you, not derail you.",
+			"Focus until the bell rings, then celebrate like it just knocked you out.",
+			"The only fire you should fight during a pomodoro is the one in your code.",
+			"Tomato today, trophy tomorrow.",
+			"Make those 25 minutes the highlight of your hour.",
+			"Breaks are the pit stop that keeps your engine from blowing.",
+			"Timer on, world off, magic on.",
+			"One pomodoro can save a project from the graveyard of 'later'.",
+			"Your attention is a nightclub—let the timer be the bouncer.",
+			"Finish the tomato, feed the ego.",
+			"Short sprints prevent long regrets.",
+			"The break bell is your cue to breathe, not to binge.",
+			"Invest 25, earn compound focus.",
+			"Let the ticking shame your procrastination into surrender.",
+			"Pomodoro is the 401(k) of deep work—small deposits, massive returns.",
+			"Keep calm and tomato on.",
+			"25 minutes of ugly progress > 0 minutes of perfect planning.",
+			"Make your timer the most consistent relationship you have.",
+			"Break smart, work sharper.",
+			"That red tomato is your passport to the zone.",
+			"Focus is finite; pomodoros make it infinite.",
+			"Win the morning tomato, win the day.",
+			"Pause notifications, unpause potential.",
+			"Let the bell mark victory, not vacancy.",
+			"Stack tomatoes like bricks, build castles by lunch.",
+			"Turn 'I'm overwhelmed' into 'I'm on my fourth pomodoro'.",
+			"Single-task like your rent depends on it.",
+			"The break is the comma that makes the sentence of work readable.",
+			"Commit to the sprint, not the marathon myth.",
+			"Timer starts, excuses evacuate.",
+			"25 minutes of grit, 5 minutes of glitter.",
+			"A pomodoro without a break is just a run-on sentence.",
+			"Focus hard, rest harder, repeat hardest.",
+			"Let your GitHub green squares match your tomato count.",
+			"Procrastination breaks; pomodoros break procrastination.",
+			"That ticking is your hype man—listen.",
+			"Make the timer your accountability partner.",
+			"Breaks reset the mind, not the mission.",
+			"Your only job for 25 minutes is to keep the timer alive.",
+			"Tomato finished = confidence deposited.",
+			"Short breaks prevent long breakdowns.",
+			"Turn anxiety into intervals.",
+			"Let the timer teach you urgency without emergency.",
+			"One tomato kills 25 minutes of doubt.",
+			"Focus is a sword; pomodoro is the whetstone.",
+			"Celebrate the bell, then get back in the ring.",
+			"Don't extend the break; extend the streak.",
+			"25 minutes of pure work is a love letter to future-you.",
+			"Make the timer your non-negotiable.",
+			"Breaks are the inhale to productivity's exhale.",
+			"Pomodoro turns 'I should' into 'I did'.",
+			"Let the ticking drown out the drama.",
+			"Stack 12 tomatoes and call it a masterpiece.",
+			"Timer is the leash on the puppy of distraction.",
+			"Respect the bell, respect yourself.",
+			"Work until the bell, rest until the next.",
+			"Tomato by tomato, empires are built.",
+			"Focus is built in 25-minute increments.",
+			"Breaks are features, not bugs.",
+			"Let the timer turn discipline into default.",
+			"Your brain deserves scheduled downtime.",
+			"Make every tomato a tiny deadline you conquer.",
+			"Pause the scroll, start the clock.",
+			"Finish the pomodoro, earn the bragging rights.",
+			"Short breaks keep the mind from buffering.",
+			"Turn the timer on, turn the chaos off.",
+			"25 minutes today, momentum tomorrow.",
+			"Let the bell be your standing ovation.",
+			"Pomodoro is CPR for dying motivation.",
+			"That red circle is your shield against overwhelm.",
+			"Breaks refill the creativity tank.",
+			"One timer, one task, one win.",
+			"Make the ticking your trademark sound.",
+			"Tomato completed = willpower reloaded.",
+			"Don't skip the break; skip the burnout.",
+			"Focus compounds faster than interest.",
+			"Let the timer turn ambition into architecture.",
+			"25 minutes of courage, 5 minutes of calm.",
+			"Stack tomatoes, not regrets.",
+			"The break is where the brain files what it just learned.",
+			"Timer on = excuses gone.",
+			"Pomodoro is the bridge between goal and done.",
+			"Make the bell your finish-line tape.",
+			"Short sprints, infinite stamina.",
+			"Let the timer turn 'someday' into 'scheduled'.",
+			"Break smart, finish strong.",
+			"Tomato today, testimonial tomorrow.",
+			"Focus is a habit paid in 25-minute installments.",
+			"Respect the interval, master the day.",
+			"That ticking is your private coach.",
+			"One pomodoro can rescue a week from the void.",
+			"Breaks are the silence between notes that makes the music.",
+			"Timer starts, perfectionism pauses.",
+			"Commit to the tomato, not the turmoil.",
+			"25 minutes of single-mindedness beats 25 years of half-heartedness.",
+			"Let the break be your mental stretch.",
+			"Pomodoro turns pressure into progress.",
+			"Make the timer your daily vote for focus.",
+			"Finish the tomato, feed the hustle.",
+			"Short breaks, long gains.",
+			"Turn the timer into your personal hype countdown.",
+			"Tomato stacked = confidence compounded.",
+			"Focus is a fire; pomodoro is the match.",
+			"Let the bell ring the lunch bell for your ego.",
+			"Breaks prevent the crash after the dash.",
+			"One timer, one mission, one masterpiece.",
+			"Make ticking your trademark rhythm.",
+			"Pomodoro is the micro-dose of momentum.",
+			"25 minutes of ruthless focus, 5 minutes of guilt-free freedom.",
+			"Don't break the chain of tomatoes.",
+			"Timer is the contract you sign with yourself.",
+			"Breaks are the reset button on mental lag.",
+			"Stack tomatoes like gold coins.",
+			"Let the timer turn stress into structure.",
+			"Finish the pomodoro, unlock the next level.",
+			"Short intervals, tall results.",
+			"Turn 'I can't focus' into 'I'm on pomodoro 3'.",
+			"That bell is your high-score sound.",
+			"One tomato at a time, you outwork the overwhelm.",
+			"Breaks are the yin to productivity's yang.",
+			"Timer starts, mental clutter collapses.",
+			"Make the timer your non-negotiable meeting with flow.",
+			"Tomato completed = doubt evicted.",
+			"Respect the 5, own the 25.",
+			"Focus is built one red circle at a time.",
+			"Let the break refresh, not regress.",
+			"Pomodoro turns chaos into choreography.",
+			"25 minutes of intent > 25 hours of drifting.",
+			"Stack them high, watch your goals die (of completion).",
+			"Timer is the leash on the monkey mind.",
+			"Breaks are the pit crew in your race.",
+			"Finish the tomato, flex the discipline muscle.",
+			"Short breaks, sharp mind.",
+			"Turn the timer into your personal shot clock.",
+			"Tomato streaks beat mood swings.",
+			"Focus is a skill funded by pomodoros.",
+			"Let the bell echo as a win.",
+			"One pomodoro can turn the tide of a day.",
+			"Breaks are the inhale that powers the exhale of work.",
+			"Timer on = tunnel vision for good.",
+			"Make every tomato a tiny trophy.",
+			"25 minutes today, momentum all week.",
+			"Don't disrespect the break; it's part of the protocol.",
+			"That ticking is your theme song—play it loud.",
+			"Commit to the sprint, savor the pause.",
+			"Pomodoro is the antidote to endless Mondays.",
+			"Stack tomatoes, stack confidence, stack life.",
+			"Focus is a staircase built 25 minutes at a time.",
+			"Let the timer turn ambition into achievement.",
+			"Finish the bell lap, then hydrate like a champ.",
+			"Short sprints, lifelong upgrades.",
+			"Turn anxiety into intervals of action.",
+			"Tomato completed = procrastination defeated.",
+			"Breaks are the reset that keeps the engine hot.",
+			"One timer, one life, limitless loops of win.",
+			"Make the ticking the soundtrack of your rise."
+		];
+
+		function setRandomQuote() {
+			const q = QUOTES[Math.floor(Math.random() * QUOTES.length)];
+			document.getElementById('quote').innerText = q;
+		}
+
+		const vscode = acquireVsCodeApi();
+
+		function format(sec) {
+			const m = Math.floor(sec / 60);
+			const s = sec % 60;
+			return `${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')}`;
+		}
+
+		window.addEventListener('message', event => {
+			if (event.data.type === 'tick') {
+				document.getElementById('time').innerText =
+					format(event.data.seconds);
+			}
+
+			if (event.data.type === 'session') {
+				document.getElementById('session').innerText =
+					`Session ${event.data.count}`;
+			}
+		});
+
+
+		function start() {
+			setRandomQuote();
+			vscode.postMessage({ type: 'start' });
+		}
+
+		function reset() {
+			setRandomQuote();
+			vscode.postMessage({ type: 'reset' });
+		}
+
+		function exitPomodoro() {
+			vscode.postMessage({ type: 'exit' });
+		}
+	</script>
+
+</body>
+
+</html>
